@@ -35,9 +35,6 @@ let together = x.toString()+y.toString()
 if (x === x && y === y){//checks if NaN
 if ((x <= 3 && y <= 3)&&(x>0 && y>0)){//not bigger than 3 and not lower than 1
 //await app.client.chat.postMessage({ channel: channelId, text: 'hi' });
-if (iswin(x) === true || iswin(y) === true) {
-  let winner = iswin(x) === x ? "you win!":"bot wins"
-}
 if (board[together] === "0") {
 function iswin(player) {
    return ((board[11] === player && board[21] === player && board[31] === player) || (board[12] === player && board[22] === player && board[32] === player) || (board[13] === player && board[23] === player && board[33] === player))
@@ -51,13 +48,16 @@ return r+c;
 }
 
 board[together] = "X"
- let randomspot = getrandomspot()
- let d = 0
- if (board[randomspot] != "0") {
-  do {randomspot = getrandomspot();d++;if (d>18) {break}}
-  while (board[randomspot] != "0")
-  } else {board[randomspot] = "O"} 
-  board[randomspot] = "O"
+if (Object.values(board).every(v => v !== "0")) {
+  await respond({ text: "It's a draw! try again!", response_type: "in_channel" })
+  delete games[user];
+  return;
+}
+let randomspot = getrandomspot()
+while (board[randomspot] !== "0") {
+  randomspot = getrandomspot()
+}
+board[randomspot] = "O"
  let visualboard = `\`\`\`
 
       |     |     
@@ -71,6 +71,11 @@ _ _ _ |_ _ _|_ _ _
       |     |
   \`\`\``;
 
+  if (iswin(X) === true || iswin(X) === true) {
+  let winner = iswin(X) === X ? "you win!":"bot wins"
+  await respond({ text: winner, response_type: "in_channel" })
+  delete games[user];
+}
 await respond({ text: visualboard, response_type: "in_channel" })
 
 } else {await respond({text:"sorry,this spot is taken, choose another!"})}
