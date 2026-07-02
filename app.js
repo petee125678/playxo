@@ -71,8 +71,8 @@ _ _ _ |_ _ _|_ _ _
       |     |
   \`\`\``;
 
-  if (iswin(X) === true || iswin(X) === true) {
-  let winner = iswin(X) === X ? "you win!":"bot wins"
+  if (iswin("X") === true || iswin("O") === true) {
+  let winner = iswin("X") === true ? "you win!":"bot wins"
   await respond({ text: winner, response_type: "in_channel" })
   delete games[user];
 }
